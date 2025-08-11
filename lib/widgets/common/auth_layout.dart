@@ -19,29 +19,33 @@ class AuthLayout extends StatelessWidget {
     final imageHeight = screenHeight * 0.25; // Quarter of screen
 
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       body: Stack(
         children: [
           // Background Image (Quarter of screen)
-          Container(
-            height: imageHeight,
-            width: screenWidth,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(
-                  'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
             child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.3),
-                    Colors.black.withOpacity(0.1),
-                  ],
+              height: imageHeight,
+              width: screenWidth,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/banner1-min 3.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.3),
+                      Colors.black.withOpacity(0.1),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -49,8 +53,8 @@ class AuthLayout extends StatelessWidget {
           // Main Content Card
           Positioned(
             top: imageHeight - 30, // Overlap the image slightly
-            left: 0,
-            right: 0,
+            left: 16,
+            right: 16,
             bottom: 0,
             child: Container(
               decoration: const BoxDecoration(
@@ -67,46 +71,35 @@ class AuthLayout extends StatelessWidget {
                   ),
                 ],
               ),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.06,
-                    vertical: 24,
-                  ),
-                  child: Column(
-                    children: [
-                      if (showBackButton)
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed:
-                                  onBackPressed ?? () => Navigator.pop(context),
-                              icon: const Icon(
-                                Icons.arrow_back,
-                                color: Colors.black87,
-                              ),
-                              padding: EdgeInsets.zero,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (showBackButton)
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed:
+                                onBackPressed ?? () => Navigator.pop(context),
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.black87,
                             ),
-                          ],
-                        ),
-                      child,
-                    ],
-                  ),
+                            padding: EdgeInsets.zero,
+                          ),
+                        ],
+                      ),
+                    const SizedBox(height: 10),
+                    child,
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
             ),
           ),
           // Safe area for status bar
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: SafeArea(child: Container(height: 0)),
-          ),
+          SafeArea(child: Container()),
         ],
       ),
     );
