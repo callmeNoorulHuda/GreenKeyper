@@ -52,16 +52,18 @@ class AuthLayout extends StatelessWidget {
           ),
           // Main Content Card
           Positioned(
-            top: imageHeight - 30, // Overlap the image slightly
+            top: imageHeight - 50, // Overlap the image slightly
             left: 16,
             right: 16,
-            bottom: 0,
+            bottom: 100,
             child: Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
                 ),
                 boxShadow: [
                   BoxShadow(
