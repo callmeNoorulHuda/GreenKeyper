@@ -30,47 +30,70 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
         _isLoading = false;
       });
 
-      _showSuccessDialog();
+      _showSuccessToast();
     }
   }
 
-  void _showSuccessDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.amber[100],
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          content: const Row(
-            children: [
-              Icon(Icons.celebration, color: Colors.orange),
-              SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  'Congratulations! Your password has changed.',
-                  style: TextStyle(fontSize: 14),
+  void _showSuccessToast() {
+    // Create an overlay entry for the custom toast
+    OverlayState? overlayState = Overlay.of(context);
+    OverlayEntry? overlayEntry;
+
+    overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        top: MediaQuery.of(context).padding.top + 20, // Below status bar
+        left: 16,
+        right: 16,
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFEAC9), // Light orange/yellow background
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
                 ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
-              child: const Text(
-                'OK',
-                style: TextStyle(color: Color(0xFF4A9B8F)),
-              ),
+              ],
             ),
-          ],
-        );
-      },
+            child: Row(
+              children: [
+                const Text('🎉', style: TextStyle(fontSize: 18)),
+                const Expanded(
+                  child: Text(
+                    'Congratulations! Your password has changed.',
+                    style: TextStyle(
+                      color: Colors.black, // Brown text color
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    overlayEntry?.remove();
+                  },
+                  child: const Icon(Icons.close, color: Colors.black, size: 18),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
+
+    // Insert the overlay
+    overlayState.insert(overlayEntry);
+
+    // Auto-remove after 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      overlayEntry?.remove();
+      // Navigate back to home/root after toast disappears
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    });
   }
 
   @override
@@ -87,7 +110,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
       child: Column(
         children: [
           const LogoHeader(
-            title: 'New Password',
+            Heading: "New Password",
             subtitle: 'Please add new credentials to change password.',
           ),
           const SizedBox(height: 32),
@@ -100,20 +123,29 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               CustomTextField(
                 label: 'Password',
                 hint: '••••••••',
-                prefixIcon: Icons.lock_outline,
+                prefixIcon: Icons.lock,
                 isPassword: true,
                 controller: _passwordController,
                 validator: (value) {
-                  if (value?.isEmpty ?? true || value!.length < 6) {
-                    return 'Password must be at least 6 characters';
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
                   }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters long';
+                  }
+
+                  if (!value.contains(' ')) {
+                    return 'Password cannot contain spaces';
+                  }
+
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
               CustomTextField(
                 label: 'Confirm Password',
                 hint: '••••••••',
-                prefixIcon: Icons.lock_outline,
+                prefixIcon: Icons.lock,
                 isPassword: true,
                 controller: _confirmPasswordController,
                 validator: (value) {

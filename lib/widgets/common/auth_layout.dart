@@ -16,93 +16,84 @@ class AuthLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final imageHeight = screenHeight * 0.25; // Quarter of screen
+    final imageHeight = screenHeight * 0.30;
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
-      body: Stack(
-        children: [
-          // Background Image (Quarter of screen)
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: imageHeight,
-              width: screenWidth,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/banner1-min 3.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.black.withOpacity(0.3),
-                      Colors.black.withOpacity(0.1),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+      resizeToAvoidBottomInset: true,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xffFFFFFF), Color(0xffEDEDED), Color(0xffD8DBD8)],
+            stops: [0.0, 0.5, 1.0],
           ),
-          // Main Content Card
-          Positioned(
-            top: imageHeight - 50, // Overlap the image slightly
-            left: 16,
-            right: 16,
-            bottom: 100,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 10,
-                    spreadRadius: 5,
-                  ),
-                ],
-              ),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              children: [
+                // 🔹 Use Stack to layer image and back button
+                Stack(
                   children: [
-                    if (showBackButton)
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed:
-                                onBackPressed ?? () => Navigator.pop(context),
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              color: Colors.black87,
-                            ),
-                            padding: EdgeInsets.zero,
-                          ),
-                        ],
+                    Container(
+                      height: imageHeight,
+                      width: screenWidth,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/banner1-min 3.png'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    const SizedBox(height: 10),
-                    child,
-                    const SizedBox(height: 20),
+                    ),
+                    if (showBackButton)
+                      Positioned(
+                        top: 8,
+                        left: 8,
+                        child: IconButton(
+                          onPressed:
+                              onBackPressed ?? () => Navigator.pop(context),
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.black, // White looks better on banner
+                            size: 28,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
-              ),
+
+                // Content Card with overlap effect
+                Transform.translate(
+                  offset: const Offset(0, -110),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Card(
+                      color: Colors.white.withAlpha(240),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox(height: 10),
+                            child,
+                            const SizedBox(height: 100),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 80),
+              ],
             ),
           ),
-          // Safe area for status bar
-          SafeArea(child: Container()),
-        ],
+        ),
       ),
     );
   }

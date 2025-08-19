@@ -20,6 +20,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   bool _isLoading = false;
 
   void _handleSendCode() async {
+    if (!_formKey.currentState!.validate()) {
+      // Form is invalid → errors will show automatically
+      return;
+    }
     setState(() {
       _isLoading = true;
     });
@@ -34,9 +38,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   void _handleConfirmCode() {
-    Navigator.push(
+    if (!_formKey.currentState!.validate()) {
+      // Form is invalid → errors will show automatically
+      return;
+    }
+    Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const NewPasswordScreen()),
+      MaterialPageRoute(builder: (context) => NewPasswordScreen()),
     );
   }
 
@@ -54,7 +62,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       child: Column(
         children: [
           LogoHeader(
-            title: 'Forgot Password',
+            Heading: 'Forgot Password',
             subtitle: _currentStep == 0
                 ? 'Please enter your email to request a password reset'
                 : 'Please enter the code sent to your email.',
@@ -70,9 +78,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 CustomTextField(
                   label: 'Email',
                   hint: 'abc@gmail.com',
-                  prefixIcon: Icons.email_outlined,
+                  prefixIcon: Icons.email_rounded,
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Email is required';
+                    }
+                    if (!value.contains('@')) {
+                      return 'Enter a valid email';
+                    }
+                    return null; // ✅ no error
+                  },
                 ),
               ],
             )
@@ -85,7 +102,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 CustomTextField(
                   label: 'Email',
                   hint: 'abc@gmail.com',
-                  prefixIcon: Icons.email_outlined,
+                  prefixIcon: Icons.email_rounded,
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                 ),
@@ -95,6 +112,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   prefixIcon: Icons.security,
                   controller: _codeController,
                   keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Code is required';
+                    }
+                    return null;
+                  },
                 ),
               ],
             ),

@@ -36,12 +36,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.label,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
+        Padding(
+          padding: const EdgeInsets.only(left: 15.0),
+          child: Text(
+            widget.label,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Color(0xff6C757D),
+            ),
           ),
         ),
         const SizedBox(height: 8),
@@ -51,9 +54,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
           validator: widget.validator,
           keyboardType: widget.keyboardType,
           decoration: InputDecoration(
+            filled: true, // enables background fill
+            fillColor: Colors.transparent, // makes it blend with parent
             hintText: widget.hint,
-            hintStyle: TextStyle(color: Colors.grey[400]),
-            prefixIcon: Icon(widget.prefixIcon, color: const Color(0xFF4A9B8F)),
+            hintStyle: TextStyle(color: Color(0xffA1A1A1)),
+            prefixIcon: Icon(widget.prefixIcon, color: const Color(0xFF017B7B)),
             suffixIcon: widget.isPassword
                 ? IconButton(
                     icon: Icon(
@@ -68,39 +73,27 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   )
                 : null,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.grey[300]!),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.grey[300]!),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: Color(0xFF4A9B8F), width: 2),
+              borderRadius: BorderRadius.circular(10),
+              borderSide: const BorderSide(color: Color(0xFF017B7B), width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: Colors.red),
             ),
-            filled: true,
-            fillColor: Colors.white,
-          ),
-        ),
-        if (widget.showError && widget.errorText != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 4),
-            child: Row(
-              children: [
-                const Icon(Icons.error, color: Colors.red, size: 16),
-                const SizedBox(width: 4),
-                Text(
-                  widget.errorText!,
-                  style: const TextStyle(color: Colors.red, fontSize: 12),
-                ),
-              ],
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.red),
             ),
           ),
+        ),
       ],
     );
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../widgets/common/auth_layout.dart';
 import '../../widgets/common/logo_header.dart';
 import '../../widgets/common/custom_text_field.dart';
-import '../../widgets/common/custom_button.dart';
 import '../../widgets/common/text_link.dart';
 import '../../widgets/auth/auth_form.dart';
 import 'signup_screen.dart';
@@ -19,31 +18,24 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _showEmailError = false;
-  bool _showPasswordError = false;
   bool _isLoading = false;
 
   void _handleLogin() async {
-    setState(() {
-      _showEmailError =
-          _emailController.text.isEmpty || !_emailController.text.contains('@');
-      _showPasswordError = _passwordController.text.isEmpty;
-      _isLoading = true;
-    });
+    if (!_formKey.currentState!.validate()) {
+      // Form is invalid → errors will show automatically
+      return;
+    }
 
-    // Simulate API call
+    setState(() => _isLoading = true);
+
     await Future.delayed(const Duration(seconds: 2));
 
-    setState(() {
-      _isLoading = false;
-    });
+    setState(() => _isLoading = false);
 
-    if (!_showEmailError && !_showPasswordError) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Login successful!')));
-      }
+    if (mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Login successful!')));
     }
   }
 
@@ -59,7 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return AuthLayout(
       child: Column(
         children: [
-          const SizedBox(height: 20),
           const LogoHeader(title: 'Welcome to Greenkeyper!'),
           const SizedBox(height: 40),
           AuthForm(
@@ -71,20 +62,36 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomTextField(
                 label: 'Email',
                 hint: 'Enter your email',
-                prefixIcon: Icons.email_outlined,
+                prefixIcon: Icons.email_rounded,
                 controller: _emailController,
-                showError: _showEmailError,
-                errorText: 'Invalid Email',
+
                 keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Email is required';
+                  }
+                  if (!value.contains('@')) {
+                    return 'Enter a valid email';
+                  }
+                  return null; // ✅ no error
+                },
               ),
               CustomTextField(
                 label: 'Password',
                 hint: 'Enter your password',
-                prefixIcon: Icons.lock_outline,
+                prefixIcon: Icons.lock,
                 isPassword: true,
                 controller: _passwordController,
-                showError: _showPasswordError,
-                errorText: 'Invalid Password!',
+
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Password is required';
+                  }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 chars';
+                  }
+                  return null;
+                },
               ),
             ],
             additionalWidget: Align(
@@ -100,7 +107,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: const Text(
                   'Forgot Password?',
-                  style: TextStyle(color: Color(0xFF4A9B8F), fontSize: 14),
+                  style: TextStyle(
+                    color: Color(0xFF016969),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),

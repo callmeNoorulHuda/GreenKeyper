@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../common/custom_text_field.dart';
 import '../common/custom_button.dart';
 
 class AuthForm extends StatelessWidget {
@@ -28,7 +27,7 @@ class AuthForm extends StatelessWidget {
         children: [
           ...fields.map(
             (field) => Padding(
-              padding: const EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: field,
             ),
           ),
@@ -36,6 +35,7 @@ class AuthForm extends StatelessWidget {
             additionalWidget!,
             const SizedBox(height: 20),
           ],
+          const SizedBox(height: 30),
           CustomButton(
             text: buttonText,
             onPressed: onSubmit,

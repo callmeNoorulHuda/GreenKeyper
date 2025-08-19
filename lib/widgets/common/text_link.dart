@@ -19,7 +19,14 @@ class TextLink extends StatelessWidget {
     return Row(
       mainAxisAlignment: alignment,
       children: [
-        Text(text, style: const TextStyle(color: Colors.black54)),
+        Text(
+          text,
+          style: const TextStyle(
+            color: Color(0xFF2D2D2D),
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         TextButton(
           onPressed: onPressed,
           style: TextButton.styleFrom(
@@ -30,8 +37,9 @@ class TextLink extends StatelessWidget {
           child: Text(
             linkText,
             style: const TextStyle(
-              color: Color(0xFF4A9B8F),
-              fontWeight: FontWeight.w600,
+              color: Color(0xff016969),
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
             ),
           ),
         ),

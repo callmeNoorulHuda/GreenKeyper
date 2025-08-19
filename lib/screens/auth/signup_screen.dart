@@ -59,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       showBackButton: true,
       child: Column(
         children: [
-          const LogoHeader(title: 'Sign Up'),
+          const LogoHeader(),
           const SizedBox(height: 32),
           AuthForm(
             formKey: _formKey,
@@ -70,7 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               CustomTextField(
                 label: 'Full Name',
                 hint: 'Enter your full name',
-                prefixIcon: Icons.person_outline,
+                prefixIcon: Icons.person,
                 controller: _fullNameController,
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
@@ -82,11 +82,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               CustomTextField(
                 label: 'Email',
                 hint: 'Enter your email',
-                prefixIcon: Icons.email_outlined,
+                prefixIcon: Icons.email_rounded,
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
-                  if (value?.isEmpty ?? true || !value!.contains('@')) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  if (!value.contains('@')) {
                     return 'Please enter a valid email';
                   }
                   return null;
@@ -95,7 +98,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               CustomTextField(
                 label: 'Contact',
                 hint: 'Enter your contact',
-                prefixIcon: Icons.phone_outlined,
+                prefixIcon: Icons.phone,
                 controller: _contactController,
                 keyboardType: TextInputType.phone,
                 validator: (value) {
@@ -108,20 +111,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
               CustomTextField(
                 label: 'Password',
                 hint: 'Enter your password',
-                prefixIcon: Icons.lock_outline,
+                prefixIcon: Icons.lock,
                 isPassword: true,
                 controller: _passwordController,
                 validator: (value) {
-                  if (value?.isEmpty ?? true || value!.length < 6) {
-                    return 'Password must be at least 6 characters';
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
                   }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters long';
+                  }
+
+                  if (!value!.contains(' ')) {
+                    return 'Password cannot contain spaces';
+                  }
+
                   return null;
                 },
               ),
               CustomTextField(
                 label: 'Confirm Password',
                 hint: 'Enter confirm password',
-                prefixIcon: Icons.lock_outline,
+                prefixIcon: Icons.lock,
                 isPassword: true,
                 controller: _confirmPasswordController,
                 validator: (value) {
