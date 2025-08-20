@@ -41,7 +41,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           child: Text(
             widget.label,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 17,
               fontWeight: FontWeight.w600,
               color: Color(0xff6C757D),
             ),

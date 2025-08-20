@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "308378945973",
+    "project_id": "greenkeyper-93416",
+    "storage_bucket": "greenkeyper-93416.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308378945973:android:e6323f89552b75b95731fc",
+        "android_client_info": {
+          "package_name": "com.greenkeyper.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPPIxICG5FBFLvvwAFRQ3L8HZAwMh3JP0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

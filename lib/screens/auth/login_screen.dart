@@ -4,6 +4,7 @@ import '../../widgets/common/logo_header.dart';
 import '../../widgets/common/custom_text_field.dart';
 import '../../widgets/common/text_link.dart';
 import '../../widgets/auth/auth_form.dart';
+import '../demo_screen.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
 
@@ -36,6 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Login successful!')));
+
+      // Navigate to demo screen instead of just showing snackbar
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const DemoScreen()),
+      );
     }
   }
 
@@ -64,7 +71,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 hint: 'Enter your email',
                 prefixIcon: Icons.email_rounded,
                 controller: _emailController,
-
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -82,7 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 prefixIcon: Icons.lock,
                 isPassword: true,
                 controller: _passwordController,
-
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Password is required';
