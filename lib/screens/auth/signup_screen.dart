@@ -122,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return 'Password must be at least 6 characters long';
                   }
 
-                  if (!value!.contains(' ')) {
+                  if (!value.contains(' ')) {
                     return 'Password cannot contain spaces';
                   }
 

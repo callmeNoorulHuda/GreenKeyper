@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:greenkeyper/screens/auth/edit_profile_screen.dart';
+import 'package:greenkeyper/screens/edit_profile_screen.dart';
 
-import 'auth/checklist_screen.dart';
+import 'checklist_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

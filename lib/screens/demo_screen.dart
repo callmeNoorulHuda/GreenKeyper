@@ -1,7 +1,7 @@
 // lib/screens/demo_screen.dart
 import 'package:flutter/material.dart';
-import 'auth/checklist_screen.dart';
-import 'auth/edit_profile_screen.dart';
+import 'checklist_screen.dart';
+import 'edit_profile_screen.dart';
 
 class DemoScreen extends StatelessWidget {
   const DemoScreen({super.key});

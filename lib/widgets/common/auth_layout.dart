@@ -42,7 +42,7 @@ class AuthLayout extends StatelessWidget {
                       width: screenWidth,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/banner1-min 3.png'),
+                          image: AssetImage('assets/banner.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
