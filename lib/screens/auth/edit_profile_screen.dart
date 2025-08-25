@@ -58,22 +58,42 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               ListTile(
                 leading: const Icon(Icons.camera_alt, color: Color(0xFF017B7B)),
                 title: const Text('Camera'),
-                onTap: () {
+                onTap: () async {
                   Navigator.pop(context);
-                  ref
-                      .read(profileProvider.notifier)
-                      .pickProfileImage(ImageSource.camera);
+                  try {
+                    await ref
+                        .read(profileProvider.notifier)
+                        .pickProfileImage(ImageSource.camera);
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text('Failed to pick image. Please try again.'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
                 },
               ),
               ListTile(
                 leading:
                     const Icon(Icons.photo_library, color: Color(0xFF017B7B)),
                 title: const Text('Gallery'),
-                onTap: () {
+                onTap: () async {
                   Navigator.pop(context);
-                  ref
-                      .read(profileProvider.notifier)
-                      .pickProfileImage(ImageSource.gallery);
+                  try {
+                    await ref
+                        .read(profileProvider.notifier)
+                        .pickProfileImage(ImageSource.gallery);
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text('Failed to pick image. Please try again.'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
                 },
               ),
             ],

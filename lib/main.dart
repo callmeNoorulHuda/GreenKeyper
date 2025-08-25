@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:greenkeyper/screens/auth/edit_profile_screen.dart';
 import 'package:greenkeyper/screens/main_screen.dart';
-import 'screens/auth/login_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));

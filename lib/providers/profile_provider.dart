@@ -35,13 +35,13 @@ class UserProfile {
 // Profile State Notifier
 class ProfileNotifier extends StateNotifier<UserProfile> {
   ProfileNotifier()
-    : super(
-        UserProfile(
-          fullName: 'Jane Cooper',
-          email: 'janecooper@gmail.com',
-          contact: '',
-        ),
-      );
+      : super(
+          UserProfile(
+            fullName: 'Jane Cooper',
+            email: 'janecooper@gmail.com',
+            contact: '',
+          ),
+        );
 
   final ImagePicker _picker = ImagePicker();
 
@@ -71,7 +71,7 @@ class ProfileNotifier extends StateNotifier<UserProfile> {
       }
     } catch (e) {
       // Handle error - could emit to a separate error state
-      print('Error picking image: $e');
+      throw Exception('Failed to pick image');
     }
   }
 
