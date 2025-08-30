@@ -21,19 +21,18 @@ class CustomButton extends StatelessWidget {
     this.height,
     this.width,
     this.padding,
-    this.borderRadius = 10, // Matches your 10px radius
+    this.borderRadius = 10,
   });
 
   @override
   Widget build(BuildContext context) {
     // Default gradient colors (from your design)
-    final colors =
-        gradientColors ??
+    final colors = gradientColors ??
         [
-          const Color(0xFF006F6F),
-          const Color(0xFF029090),
+          const Color(0xFF057B99),
+          const Color(0xFF128BAA),
           const Color(0xFF019090),
-          const Color(0xFF016F6F),
+          const Color(0xFF116976),
         ];
 
     return Container(

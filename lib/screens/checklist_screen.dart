@@ -52,7 +52,7 @@ class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: const Color(0xFF287E7E),
+        backgroundColor: const Color(0xFF057B99),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),

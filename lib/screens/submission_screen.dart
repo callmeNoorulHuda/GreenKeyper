@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greenkeyper/widgets/common/custom_button.dart';
 import '../providers/checklist_provider.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class SubmissionScreen extends ConsumerStatefulWidget {
   const SubmissionScreen({super.key});
@@ -199,96 +200,102 @@ class _SubmissionScreenState extends ConsumerState<SubmissionScreen> {
                     //style: BorderStyle.dashed,
                   ),
                 ),
-                child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: checklist.uploadedImages.length + 1,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(width: 12),
-                    itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return GestureDetector(
-                            onTap: () {
-                              _showImagePickerOptions();
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                  width: 120,
-                                  height: 120,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFCFCACA),
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color:
-                                          const Color(0xFF4A9B8E).withAlpha(77),
-                                      width: 2,
-                                      //style: BorderStyle.dashed,
-                                    ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: checklist.uploadedImages.length + 1,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: 12),
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return GestureDetector(
+                              onTap: () {
+                                _showImagePickerOptions();
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: DottedBorder(
+                                  options: RoundedRectDottedBorderOptions(
+                                    dashPattern: const [6, 3],
+                                    color:
+                                        const Color(0xFF4A9B8E).withAlpha(77),
+                                    strokeWidth: 2,
+                                    radius: Radius.circular(12),
                                   ),
-                                  child: const Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.cloud_upload_outlined,
-                                          size: 40,
-                                          color: Color(0xFF4A9B8E),
-                                        ),
-                                        SizedBox(height: 8),
-                                        Text(
-                                          'Click to upload image',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Color(0xFF4A9B8E),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ])),
-                            ));
-                      }
-                      final image = checklist.uploadedImages[index - 1];
-                      return Stack(children: [
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                              image: FileImage(image),
-                              fit: BoxFit.cover,
-                            ),
-                            border: Border.all(
-                              color: const Color(0xFF4A9B8E).withAlpha(77),
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 4,
-                          right: 4,
-                          child: GestureDetector(
-                            onTap: () {
-                              ref
-                                  .read(checklistProvider.notifier)
-                                  .removeImage(index - 1);
-                            },
-                            child: Container(
-                              width: 24,
-                              height: 24,
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
+                                  child: Container(
+                                      width: 150,
+                                      height: 120,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFF6F6F6),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.cloud_upload_rounded,
+                                              size: 40,
+                                              color: Color(0xFF4A9B8E),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              'Click to upload image',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xFF4A9B8E),
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ])),
+                                ),
+                              ));
+                        }
+                        final image = checklist.uploadedImages[index - 1];
+                        return Stack(children: [
+                          Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: FileImage(image),
+                                fit: BoxFit.cover,
                               ),
-                              child: const Icon(
-                                Icons.close,
-                                color: Colors.white,
-                                size: 16,
+                              border: Border.all(
+                                color: const Color(0xFF4A9B8E).withAlpha(77),
+                                width: 1,
                               ),
                             ),
                           ),
-                        ),
-                      ]);
-                    }),
+                          Positioned(
+                            top: 4,
+                            right: 4,
+                            child: GestureDetector(
+                              onTap: () {
+                                ref
+                                    .read(checklistProvider.notifier)
+                                    .removeImage(index - 1);
+                              },
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]);
+                      }),
+                ),
               ),
             ),
           ],
@@ -415,7 +422,7 @@ class _SubmissionScreenState extends ConsumerState<SubmissionScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: const Color(0xFF287E7E),
+        backgroundColor: const Color(0xFF057B99),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
