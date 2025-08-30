@@ -15,7 +15,7 @@ class ChecklistScreen extends ConsumerStatefulWidget {
 class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
   Widget _buildProgressBar(int completedItems, int totalItems) {
     return Container(
-      width: double.infinity, //widthFactor: completedItems / totalItems,
+      width: double.infinity,
       height: 6,
       decoration: BoxDecoration(
         color: Colors.grey[300],
@@ -38,6 +38,71 @@ class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
     );
   }
 
+  void _showFaultDialog(int itemId, String itemTitle, bool currentFlagStatus) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Flag as Fault'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Item: $itemTitle',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                currentFlagStatus
+                    ? 'This item is currently flagged as a fault. Do you want to remove the fault flag?'
+                    : 'Do you want to flag this item as a fault?',
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(checklistProvider.notifier).toggleFlag(itemId);
+                Navigator.of(context).pop();
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      currentFlagStatus
+                          ? 'Fault flag removed'
+                          : 'Item flagged as fault',
+                    ),
+                    backgroundColor:
+                        currentFlagStatus ? Colors.green : Colors.orange,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    currentFlagStatus ? Colors.green : Colors.orange,
+              ),
+              child: Text(
+                currentFlagStatus ? 'Remove Flag' : 'Flag as Fault',
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final checklist = ref.watch(checklistProvider);
@@ -47,6 +112,7 @@ class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
         checklist.items.where((item) => item.isCompleted).length;
     final totalItems = checklist.items.length;
     final allCompleted = completedItems == totalItems;
+    final flaggedItems = checklist.items.where((item) => item.isFlagged).length;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -64,6 +130,21 @@ class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
               "assets/checklist_icon.png",
               height: 35,
               width: 35,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  height: 35,
+                  width: 35,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.checklist,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                );
+              },
             ),
             const SizedBox(width: 12),
             const Text(
@@ -85,6 +166,38 @@ class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
             )
           ],
         ),
+        actions: [
+          if (flaggedItems > 0)
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.flag,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      flaggedItems.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
       ),
       body: Column(
         children: [
@@ -92,7 +205,7 @@ class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
           // Progress indicator at top
           Container(
             padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
-            color: Color(0xFFF5F5F5),
+            color: const Color(0xFFF5F5F5),
             child: Column(
               children: [
                 Row(
@@ -169,13 +282,33 @@ class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
 
                       // Task text
                       Expanded(
-                        child: Text(
-                          item.title,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.black87,
-                            height: 1.4,
-                            decorationColor: Colors.grey,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: item.isFlagged ? 8 : 0,
+                          ),
+                          decoration: item.isFlagged
+                              ? BoxDecoration(
+                                  color: Colors.orange.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: Colors.orange.withOpacity(0.3),
+                                    width: 1,
+                                  ),
+                                )
+                              : null,
+                          child: Text(
+                            item.title,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: item.isFlagged
+                                  ? Colors.orange[800]
+                                  : Colors.black87,
+                              height: 1.4,
+                              fontWeight: item.isFlagged
+                                  ? FontWeight.w500
+                                  : FontWeight.normal,
+                            ),
                           ),
                         ),
                       ),
@@ -210,7 +343,21 @@ class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Icon(Icons.flag_sharp, color: Colors.grey[400], size: 30)
+
+                      // Flag Icon
+                      GestureDetector(
+                        onTap: () => _showFaultDialog(
+                          item.id,
+                          item.title,
+                          item.isFlagged,
+                        ),
+                        child: Icon(
+                          Icons.flag_sharp,
+                          color:
+                              item.isFlagged ? Colors.orange : Colors.grey[400],
+                          size: 30,
+                        ),
+                      ),
                     ],
                   ),
                 );

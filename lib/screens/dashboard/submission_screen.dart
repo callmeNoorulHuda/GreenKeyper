@@ -214,7 +214,8 @@ class _SubmissionScreenState extends ConsumerState<SubmissionScreen> {
                                 _showImagePickerOptions();
                               },
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
                                 child: DottedBorder(
                                   options: RoundedRectDottedBorderOptions(
                                     dashPattern: const [6, 3],
@@ -224,7 +225,7 @@ class _SubmissionScreenState extends ConsumerState<SubmissionScreen> {
                                     radius: Radius.circular(12),
                                   ),
                                   child: Container(
-                                      width: 150,
+                                      width: 140,
                                       height: 120,
                                       decoration: BoxDecoration(
                                         color: const Color(0xFFF6F6F6),
@@ -241,7 +242,7 @@ class _SubmissionScreenState extends ConsumerState<SubmissionScreen> {
                                             ),
                                             SizedBox(height: 8),
                                             Text(
-                                              'Click to upload image',
+                                              '    Click to upload \n          image',
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 color: Color(0xFF4A9B8E),
@@ -254,18 +255,21 @@ class _SubmissionScreenState extends ConsumerState<SubmissionScreen> {
                         }
                         final image = checklist.uploadedImages[index - 1];
                         return Stack(children: [
-                          Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              image: DecorationImage(
-                                image: FileImage(image),
-                                fit: BoxFit.cover,
-                              ),
-                              border: Border.all(
-                                color: const Color(0xFF4A9B8E).withAlpha(77),
-                                width: 1,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              width: 170,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                  image: FileImage(image),
+                                  fit: BoxFit.cover,
+                                ),
+                                border: Border.all(
+                                  color: const Color(0xFF4A9B8E).withAlpha(77),
+                                  width: 1,
+                                ),
                               ),
                             ),
                           ),
