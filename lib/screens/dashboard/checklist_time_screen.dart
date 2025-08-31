@@ -13,7 +13,7 @@ class ChecklistTimeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFDFDFD),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         toolbarHeight: 80,
@@ -53,10 +53,12 @@ class ChecklistTimeScreen extends StatelessWidget {
           children: [
             // Assigned Vehicle
             Container(
+              height: 130,
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.white,
+                border: Border.all(color: const Color(0xFFE6E6E6)),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -66,34 +68,42 @@ class ChecklistTimeScreen extends StatelessWidget {
                   )
                 ],
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Row(
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  Image.asset(
+                    "assets/assigned_vehicle_icon.png",
+                    height: 60,
+                  ),
+                  const SizedBox(width: 16),
+                  Column(
                     children: [
-                      Image.asset(
-                        "assets/assigned_vehicle_icon.png",
-                        height: 28,
+                      const SizedBox(
+                        height: 25,
                       ),
-                      const SizedBox(width: 12),
                       const Text(
                         "Assigned vehicle",
                         style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          vehicleName,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF3F3F3F),
+                          ),
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    vehicleName,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
                   ),
                 ],
               ),
@@ -106,18 +116,22 @@ class ChecklistTimeScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.05),
+                color: Color(0xFFF5FAFF),
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: const Row(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.list_alt, color: Colors.blue),
-                  SizedBox(width: 8),
-                  Text(
+                  Image.asset(
+                    "assets/select_time_icon.png",
+                    height: 25,
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
                     "Select your checklist time",
                     style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
                       color: Colors.black87,
                     ),
                   ),
@@ -125,7 +139,7 @@ class ChecklistTimeScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
             // Beginning of the Day Card
             _checklistCard(
@@ -134,13 +148,16 @@ class ChecklistTimeScreen extends StatelessWidget {
               questions: 30,
               completed: true,
               gradient: const LinearGradient(
-                colors: [Color(0xFF057B99), Color(0xFF128BAA)],
+                colors: [
+                  Color(0xFF057B99),
+                  Color(0xFF4F97AA),
+                  Color(0xFF528D96)
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              icon: Icons.wb_sunny,
-              iconColor: Colors.white,
               textColor: Colors.white,
+              path: 'assets/beginning_of_day.png',
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const ChecklistScreen()),
@@ -156,9 +173,8 @@ class ChecklistTimeScreen extends StatelessWidget {
               questions: 30,
               completed: false,
               gradient: null,
-              icon: Icons.nightlight_round,
-              iconColor: Colors.deepPurple,
               textColor: Colors.black87,
+              path: "assets/end_of_day.png",
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const ChecklistScreen()),
@@ -172,73 +188,92 @@ class ChecklistTimeScreen extends StatelessWidget {
 
   Widget _checklistCard(
     BuildContext context, {
+    required String path,
     required String title,
     required int questions,
     required bool completed,
     Gradient? gradient,
-    required IconData icon,
-    required Color iconColor,
     required Color textColor,
     required VoidCallback onTap,
   }) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          gradient: gradient,
-          color: gradient == null ? Colors.white : null,
-          borderRadius: BorderRadius.circular(15),
-          border:
-              gradient == null ? Border.all(color: Colors.grey.shade300) : null,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12.withOpacity(0.05),
-              blurRadius: 5,
-              offset: const Offset(0, 2),
-            )
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, size: 32, color: iconColor),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: textColor,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 40),
+          width: double.infinity,
+          padding: const EdgeInsets.all(25),
+          decoration: BoxDecoration(
+            gradient: gradient,
+            color: gradient == null ? Colors.white : null,
+            borderRadius: BorderRadius.circular(15),
+            border: gradient == null
+                ? Border.all(color: Colors.grey.shade300)
+                : null,
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 5,
+                offset: Offset(0, 2),
+              )
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                path,
+                height: 45,
               ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              "Checklist Questions $questions",
-              style: TextStyle(
-                fontSize: 14,
-                color: textColor.withOpacity(0.8),
-              ),
-            ),
-            if (completed) ...[
-              const SizedBox(height: 6),
+              const SizedBox(height: 12),
               Text(
-                "Completed",
+                title,
                 style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 19,
+                  fontWeight: FontWeight.w600,
                   color: textColor,
                 ),
               ),
+              const SizedBox(height: 6),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Checklist Questions: ",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: textColor,
+                    ),
+                  ),
+                  Text(
+                    '$questions',
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: gradient != null
+                            ? Color(0xFFF0BC6B)
+                            : Color(0xFF006666)),
+                  )
+                ],
+              ),
+              if (completed) ...[
+                const SizedBox(height: 5),
+                Text(
+                  "Completed",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: textColor,
+                  ),
+                ),
+              ],
+              const SizedBox(height: 12),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Icon(Icons.arrow_forward, size: 25, color: textColor),
+              )
             ],
-            const SizedBox(height: 12),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Icon(Icons.arrow_forward,
-                  size: 22, color: textColor.withOpacity(0.9)),
-            )
-          ],
+          ),
         ),
       ),
     );

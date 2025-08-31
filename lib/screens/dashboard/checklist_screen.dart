@@ -366,36 +366,39 @@ class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
           ),
 
           // Next button - only enabled when all items are completed
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: CustomButton(
-              text: 'Next',
-              textColor: allCompleted ? Colors.white : const Color(0xFFA9A9A9),
-              onPressed: allCompleted
-                  ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SubmissionScreen(),
-                        ),
-                      );
-                    }
-                  : () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Please complete the ${totalItems - completedItems} remaining tasks',
-                            style: const TextStyle(color: Colors.white),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: CustomButton(
+                text: 'Next',
+                textColor:
+                    allCompleted ? Colors.white : const Color(0xFFA9A9A9),
+                onPressed: allCompleted
+                    ? () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SubmissionScreen(),
                           ),
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                        );
+                      }
+                    : () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Please complete the ${totalItems - completedItems} remaining tasks',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
-                        ),
-                      );
-                    },
-              width: double.infinity,
-              height: 50,
+                        );
+                      },
+                width: double.infinity,
+                height: 50,
+              ),
             ),
           ),
         ],

@@ -17,6 +17,9 @@ dependencies:
   dotted_border: ^3.1.0
   shared_preferences: ^2.5.3
   fl_chart: ^1.0.0
+  firebase_core: ^4.0.0
+  firebase_analytics: ^12.0.0
+  firebase_crashlytics: ^5.0.0
 
   # Image Picker
   image_picker: ^1.0.4
