@@ -15,6 +15,8 @@ dependencies:
   flutter_riverpod: ^2.4.9
   riverpod_annotation: ^2.3.3
   dotted_border: ^3.1.0
+  shared_preferences: ^2.5.3
+  fl_chart: ^1.0.0
 
   # Image Picker
   image_picker: ^1.0.4

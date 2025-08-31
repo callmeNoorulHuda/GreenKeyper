@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greenkeyper/widgets/common/custom_button.dart';
-import '../providers/checklist_provider.dart';
+import '../../providers/checklist_provider.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 class SubmissionScreen extends ConsumerStatefulWidget {
@@ -222,7 +222,7 @@ class _SubmissionScreenState extends ConsumerState<SubmissionScreen> {
                                     color:
                                         const Color(0xFF4A9B8E).withAlpha(77),
                                     strokeWidth: 2,
-                                    radius: Radius.circular(12),
+                                    radius: const Radius.circular(12),
                                   ),
                                   child: Container(
                                       width: 140,

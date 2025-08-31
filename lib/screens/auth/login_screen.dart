@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/common/auth_layout.dart';
 import '../../widgets/common/logo_header.dart';
 import '../../widgets/common/custom_text_field.dart';
 import '../../widgets/common/text_link.dart';
 import '../../widgets/auth/auth_form.dart';
-import '../demo_screen.dart';
+import '../dashboard/demo_screen_2.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
 
@@ -31,6 +32,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
     await Future.delayed(const Duration(seconds: 2));
 
+    // Extract username from email (before @)
+    final email = _emailController.text;
+    final username = email.contains('@') ? email.split('@')[0] : email;
+
+    // Save username to SharedPreferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+        'user_name', username.replaceAll('.', ' ').toUpperCase());
+    await prefs.setBool('is_logged_in', true);
+
+    // Initialize default vehicle data if not exists
+    final existingVehicles = prefs.getStringList('assigned_vehicles');
+    if (existingVehicles == null) {
+      final defaultVehicles = [
+        'Nostalgia|',
+        'Ocean Whisper|',
+        'Silver Horizon|',
+        'Honda Civic|ABC 9832',
+        'Suzuki Cultus|BKX 2245',
+        'Suzuki Alto|MEP 4521',
+      ];
+      await prefs.setStringList('assigned_vehicles', defaultVehicles);
+      await prefs.setInt('assigned_vehicles_count', 6);
+      await prefs.setString('selected_vehicle', 'Nostalgia');
+      await prefs.setInt('resolved_faults', 3);
+      await prefs.setInt('pending_faults', 1);
+    }
+
     setState(() => _isLoading = false);
 
     if (mounted) {
@@ -38,10 +67,10 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
       ).showSnackBar(const SnackBar(content: Text('Login successful!')));
 
-      // Navigate to demo screen instead of just showing snackbar
+      // Navigate to dashboard screen instead of demo screen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const DemoScreen()),
+        MaterialPageRoute(builder: (context) => const DemoScreen2()),
       );
     }
   }

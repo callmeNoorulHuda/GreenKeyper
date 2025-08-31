@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:greenkeyper/screens/main_screen.dart';
+import 'package:greenkeyper/splash_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -14,8 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Greenkeyper',
       theme: ThemeData(primarySwatch: Colors.teal, fontFamily: 'Roboto'),
-      //home: const LoginScreen(),
-      home: const MainScreen(),
+      home: const SplashScreen(), // ✅ Start from Splash
       debugShowCheckedModeBanner: false,
     );
   }

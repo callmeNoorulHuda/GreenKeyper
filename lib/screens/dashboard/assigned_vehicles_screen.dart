@@ -31,17 +31,15 @@ class _AssignedVehiclesScreenState extends State<AssignedVehiclesScreen> {
     final prefs = await SharedPreferences.getInstance();
 
     // Check if vehicles are already stored
-    final List<String>? storedVehicles =
-        prefs.getStringList('assigned_vehicles');
+    final List<String>? storedVehicles = prefs.getStringList(
+      'assigned_vehicles',
+    );
 
     if (storedVehicles != null && storedVehicles.isNotEmpty) {
       setState(() {
         allVehicles = storedVehicles.map((vehicle) {
           final parts = vehicle.split('|');
-          return {
-            'name': parts[0],
-            'id': parts.length > 1 ? parts[1] : '',
-          };
+          return {'name': parts[0], 'id': parts.length > 1 ? parts[1] : ''};
         }).toList();
         filteredVehicles = List.from(allVehicles);
       });
@@ -94,7 +92,7 @@ class _AssignedVehiclesScreenState extends State<AssignedVehiclesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: 80,
         backgroundColor: const Color(0xFF057B99),
@@ -105,17 +103,10 @@ class _AssignedVehiclesScreenState extends State<AssignedVehiclesScreen> {
         ),
         title: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(
-                Icons.directions_boat,
-                color: Colors.white,
-                size: 20,
-              ),
+            Image.asset(
+              'assets/assigned_vehicle_icon.png',
+              height: 35,
+              width: 35,
             ),
             const SizedBox(width: 12),
             Text(
@@ -131,38 +122,29 @@ class _AssignedVehiclesScreenState extends State<AssignedVehiclesScreen> {
       ),
       body: Column(
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 25),
 
           // Search Field
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: const Offset(0, 2),
+            child: Material(
+              elevation: 1,
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Search Vehicles',
+                    hintStyle:
+                        const TextStyle(color: Color(0xFF627B87), fontSize: 16),
+                    suffixIcon: Icon(Icons.search, color: Colors.grey[500]),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.all(16),
                   ),
-                ],
-              ),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search Vehicles',
-                  hintStyle: TextStyle(
-                    color: Colors.grey[500],
-                    fontSize: 16,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.grey[500],
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.all(16),
                 ),
               ),
             ),
@@ -173,59 +155,61 @@ class _AssignedVehiclesScreenState extends State<AssignedVehiclesScreen> {
           // Vehicle List
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               itemCount: filteredVehicles.length,
               itemBuilder: (context, index) {
                 final vehicle = filteredVehicles[index];
                 return Container(
                   margin: const EdgeInsets.only(bottom: 12),
                   decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xFFDCDCDC)),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 5,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: Colors.grey.withOpacity(0.1),
+                    //     spreadRadius: 1,
+                    //     blurRadius: 5,
+                    //     offset: const Offset(0, 2),
+                    //   ),
+                    // ],
                   ),
                   child: ListTile(
-                    contentPadding: const EdgeInsets.all(16),
-                    leading: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF057B99).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.directions_boat,
-                        color: Color(0xFF057B99),
-                        size: 24,
-                      ),
+                    contentPadding: const EdgeInsets.all(10),
+                    leading: Image.asset(
+                      'assets/assigned_vehicles_default_icon.png',
+                      height: 40,
+                      width: 40,
                     ),
-                    title: Text(
-                      vehicle['name']!,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
-                      ),
+                    title: Row(
+                      children: [
+                        Text(
+                          vehicle['name']!,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        vehicle['id']!.isNotEmpty
+                            ? Text(
+                                "(${vehicle['id']!})",
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
+                            : Container(),
+                      ],
                     ),
-                    subtitle: vehicle['id']!.isNotEmpty
-                        ? Text(
-                            vehicle['id']!,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
-                          )
-                        : null,
                     trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.grey,
-                      size: 16,
+                      Icons.arrow_forward_rounded,
+                      color: Colors.black,
+                      size: 25,
                     ),
                     onTap: () => _selectVehicle(vehicle['name']!),
                   ),

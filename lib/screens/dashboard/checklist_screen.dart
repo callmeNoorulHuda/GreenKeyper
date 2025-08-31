@@ -1,9 +1,9 @@
 // lib/screens/checklist_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:greenkeyper/screens/submission_screen.dart';
+import 'package:greenkeyper/screens/dashboard/submission_screen.dart';
 import 'package:greenkeyper/widgets/common/custom_button.dart';
-import '../providers/checklist_provider.dart';
+import '../../providers/checklist_provider.dart';
 
 class ChecklistScreen extends ConsumerStatefulWidget {
   const ChecklistScreen({super.key});

@@ -2,11 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greenkeyper/screens/auth/new_password_screen.dart';
-import 'package:greenkeyper/screens/demo_screen.dart';
+
 import 'package:image_picker/image_picker.dart';
-import '../providers/profile_provider.dart';
-import '../widgets/common/custom_text_field.dart';
-import 'auth/login_screen.dart';
+import '../../providers/profile_provider.dart';
+import '../../widgets/common/custom_text_field.dart';
+import '../auth/login_screen.dart';
+import 'demo_screen.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});

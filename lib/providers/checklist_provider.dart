@@ -2,28 +2,54 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 // Checklist Item Model
 class ChecklistItem {
   final int id;
   final String title;
   final bool isCompleted;
+  final bool isFlagged; // New field for fault flag
 
   ChecklistItem({
     required this.id,
     required this.title,
     required this.isCompleted,
+    this.isFlagged = false,
   });
 
   ChecklistItem copyWith({
     int? id,
     String? title,
     bool? isCompleted,
+    bool? isFlagged,
   }) {
     return ChecklistItem(
       id: id ?? this.id,
       title: title ?? this.title,
       isCompleted: isCompleted ?? this.isCompleted,
+      isFlagged: isFlagged ?? this.isFlagged,
+    );
+  }
+
+  // Convert to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'isCompleted': isCompleted,
+      'isFlagged': isFlagged,
+    };
+  }
+
+  // Create from JSON
+  factory ChecklistItem.fromJson(Map<String, dynamic> json) {
+    return ChecklistItem(
+      id: json['id'],
+      title: json['title'],
+      isCompleted: json['isCompleted'],
+      isFlagged: json['isFlagged'] ?? false,
     );
   }
 }
@@ -63,7 +89,9 @@ class ChecklistState {
 
 // Simplified Checklist Notifier
 class ChecklistNotifier extends StateNotifier<ChecklistState> {
-  ChecklistNotifier() : super(_createInitialState());
+  ChecklistNotifier() : super(_createInitialState()) {
+    _loadFromSharedPreferences();
+  }
 
   final ImagePicker _picker = ImagePicker();
 
@@ -128,6 +156,56 @@ class ChecklistNotifier extends StateNotifier<ChecklistState> {
     ];
   }
 
+  // Load checklist data from SharedPreferences
+  Future<void> _loadFromSharedPreferences() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? checklistData = prefs.getString('checklist_data');
+
+      if (checklistData != null) {
+        final Map<String, dynamic> data = json.decode(checklistData);
+        final List<dynamic> itemsJson = data['items'] ?? [];
+
+        final List<ChecklistItem> loadedItems =
+            itemsJson.map((item) => ChecklistItem.fromJson(item)).toList();
+
+        state = state.copyWith(
+          items: loadedItems,
+          defectDetails: data['defectDetails'] ?? '',
+          signature: data['signature'] ?? '',
+        );
+      }
+    } catch (e) {
+      print('Error loading checklist from SharedPreferences: $e');
+    }
+  }
+
+  // Save checklist data to SharedPreferences
+  Future<void> _saveToSharedPreferences() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final Map<String, dynamic> data = {
+        'items': state.items.map((item) => item.toJson()).toList(),
+        'defectDetails': state.defectDetails,
+        'signature': state.signature,
+      };
+
+      await prefs.setString('checklist_data', json.encode(data));
+
+      // Update fault counts
+      final flaggedItems = state.items.where((item) => item.isFlagged).length;
+      final resolvedItems = state.items
+          .where((item) => item.isFlagged && item.isCompleted)
+          .length;
+      final pendingItems = flaggedItems - resolvedItems;
+
+      await prefs.setInt('resolved_faults', resolvedItems);
+      await prefs.setInt('pending_faults', pendingItems);
+    } catch (e) {
+      print('Error saving checklist to SharedPreferences: $e');
+    }
+  }
+
   void toggleItem(int itemId) {
     final updatedItems = state.items.map((item) {
       if (item.id == itemId) {
@@ -137,14 +215,29 @@ class ChecklistNotifier extends StateNotifier<ChecklistState> {
     }).toList();
 
     state = state.copyWith(items: updatedItems);
+    _saveToSharedPreferences();
+  }
+
+  void toggleFlag(int itemId) {
+    final updatedItems = state.items.map((item) {
+      if (item.id == itemId) {
+        return item.copyWith(isFlagged: !item.isFlagged);
+      }
+      return item;
+    }).toList();
+
+    state = state.copyWith(items: updatedItems);
+    _saveToSharedPreferences();
   }
 
   void updateDefectDetails(String details) {
     state = state.copyWith(defectDetails: details);
+    _saveToSharedPreferences();
   }
 
   void updateSignature(String signature) {
     state = state.copyWith(signature: signature);
+    _saveToSharedPreferences();
   }
 
   Future<void> pickImages() async {
@@ -207,6 +300,12 @@ class ChecklistNotifier extends StateNotifier<ChecklistState> {
       print('Signature: ${state.signature}');
       print('Notes: ${state.defectDetails}');
       print('Images: ${state.uploadedImages.length}');
+      print(
+          'Flagged items: ${state.items.where((item) => item.isFlagged).length}');
+
+      // Clear SharedPreferences after successful submission
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('checklist_data');
     } catch (e) {
       print('Error submitting checklist: $e');
     } finally {
@@ -216,6 +315,14 @@ class ChecklistNotifier extends StateNotifier<ChecklistState> {
 
   void resetChecklist() {
     state = _createInitialState();
+    _clearSharedPreferences();
+  }
+
+  Future<void> _clearSharedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('checklist_data');
+    await prefs.setInt('resolved_faults', 0);
+    await prefs.setInt('pending_faults', 0);
   }
 }
 
