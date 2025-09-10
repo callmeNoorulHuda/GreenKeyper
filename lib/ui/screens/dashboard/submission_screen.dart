@@ -1,9 +1,9 @@
 // lib/screens/submission_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../providers/checklist_provider.dart';
 import 'package:dotted_border/dotted_border.dart';
 
+import '../../../viewmodels/providers/checklist_provider.dart';
 import '../../widgets/common/custom_button.dart';
 
 class SubmissionScreen extends ConsumerStatefulWidget {

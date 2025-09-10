@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:image_picker/image_picker.dart';
-import '../../../providers/profile_provider.dart';
+import '../../../viewmodels/providers/profile_provider.dart';
 import '../../widgets/common/custom_text_field.dart';
 import '../auth/login_screen.dart';
 import '../auth/new_password_screen.dart';

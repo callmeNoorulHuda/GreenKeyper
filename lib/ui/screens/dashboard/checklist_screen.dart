@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:greenkeyper/ui/screens/dashboard/submission_screen.dart';
 
-import '../../../providers/checklist_provider.dart';
+import '../../../viewmodels/providers/checklist_provider.dart';
 import '../../widgets/common/custom_button.dart';
 
 class ChecklistScreen extends ConsumerStatefulWidget {
