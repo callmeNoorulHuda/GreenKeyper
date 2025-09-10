@@ -1,9 +1,10 @@
 // lib/screens/submission_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:greenkeyper/widgets/common/custom_button.dart';
-import '../../providers/checklist_provider.dart';
+import '../../../providers/checklist_provider.dart';
 import 'package:dotted_border/dotted_border.dart';
+
+import '../../widgets/common/custom_button.dart';
 
 class SubmissionScreen extends ConsumerStatefulWidget {
   const SubmissionScreen({super.key});

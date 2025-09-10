@@ -1,9 +1,10 @@
 // lib/screens/dashboard_screen.dart
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:greenkeyper/screens/dashboard/checklist_screen.dart';
-import 'package:greenkeyper/widgets/common/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../widgets/common/custom_button.dart' show CustomButton;
 import 'assigned_vehicles_screen.dart';
+import 'checklist_screen.dart';
 import 'checklist_time_screen.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -96,7 +97,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                   Text(
-                    '${assignedVehicles}', // Changed to match design
+                    '$assignedVehicles', // Changed to match design
                     style: const TextStyle(
                       color: Color(0xFFFF9800),
                       fontSize: 16,
@@ -593,6 +594,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             builder: (context) => const ChecklistScreen()));
                   }),
             ),
+            // CustomButton(
+            //     text: "Crash test",
+            //     onPressed: () {
+            //       FirebaseCrashlytics.instance.crash();
+            //     })
           ],
         ),
       ),

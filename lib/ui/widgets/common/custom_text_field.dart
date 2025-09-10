@@ -57,7 +57,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             filled: true, // enables background fill
             fillColor: Colors.transparent, // makes it blend with parent
             hintText: widget.hint,
-            hintStyle: TextStyle(color: Color(0xffA1A1A1)),
+            hintStyle: const TextStyle(color: Color(0xffA1A1A1)),
             prefixIcon: Icon(widget.prefixIcon, color: const Color(0xFF017B7B)),
             suffixIcon: widget.isPassword
                 ? IconButton(

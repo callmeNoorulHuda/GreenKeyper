@@ -176,7 +176,7 @@ class ChecklistNotifier extends StateNotifier<ChecklistState> {
         );
       }
     } catch (e) {
-      print('Error loading checklist from SharedPreferences: $e');
+      throw Exception('Failed to load checklist: $e');
     }
   }
 
@@ -202,7 +202,7 @@ class ChecklistNotifier extends StateNotifier<ChecklistState> {
       await prefs.setInt('resolved_faults', resolvedItems);
       await prefs.setInt('pending_faults', pendingItems);
     } catch (e) {
-      print('Error saving checklist to SharedPreferences: $e');
+      throw Exception('Error saving checklist: $e');
     }
   }
 
@@ -256,7 +256,7 @@ class ChecklistNotifier extends StateNotifier<ChecklistState> {
         state = state.copyWith(uploadedImages: allImages);
       }
     } catch (e) {
-      print('Error picking images: $e');
+      throw Exception('Error picking image: $e');
     }
   }
 
@@ -278,7 +278,7 @@ class ChecklistNotifier extends StateNotifier<ChecklistState> {
         state = state.copyWith(uploadedImages: allImages);
       }
     } catch (e) {
-      print('Error picking image: $e');
+      throw Exception('Error picking image: $e');
     }
   }
 
@@ -296,18 +296,18 @@ class ChecklistNotifier extends StateNotifier<ChecklistState> {
       await Future.delayed(const Duration(seconds: 2));
 
       // In real app, you would submit to backend here
-      print('Checklist submitted successfully');
-      print('Signature: ${state.signature}');
-      print('Notes: ${state.defectDetails}');
-      print('Images: ${state.uploadedImages.length}');
-      print(
-          'Flagged items: ${state.items.where((item) => item.isFlagged).length}');
+      // print('Checklist submitted successfully');
+      // print('Signature: ${state.signature}');
+      // print('Notes: ${state.defectDetails}');
+      // print('Images: ${state.uploadedImages.length}');
+      // print(
+      //     'Flagged items: ${state.items.where((item) => item.isFlagged).length}');
 
       // Clear SharedPreferences after successful submission
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('checklist_data');
     } catch (e) {
-      print('Error submitting checklist: $e');
+      throw Exception('Error saving checklist: $e');
     } finally {
       state = state.copyWith(isSubmitting: false);
     }

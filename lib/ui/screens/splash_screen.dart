@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:greenkeyper/screens/auth/login_screen.dart';
-import 'package:greenkeyper/screens/dashboard/dashboard_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'auth/login_screen.dart';
+import 'dashboard/dashboard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

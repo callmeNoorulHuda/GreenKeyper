@@ -62,7 +62,7 @@ class ChecklistTimeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black12.withOpacity(0.05),
+                    color: Colors.black12.withAlpha(13),
                     blurRadius: 5,
                     offset: const Offset(0, 2),
                   )
@@ -116,7 +116,7 @@ class ChecklistTimeScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
-                color: Color(0xFFF5FAFF),
+                color: const Color(0xFFF5FAFF),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Row(
@@ -251,8 +251,8 @@ class ChecklistTimeScreen extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14,
                         color: gradient != null
-                            ? Color(0xFFF0BC6B)
-                            : Color(0xFF006666)),
+                            ? const Color(0xFFF0BC6B)
+                            : const Color(0xFF006666)),
                   )
                 ],
               ),

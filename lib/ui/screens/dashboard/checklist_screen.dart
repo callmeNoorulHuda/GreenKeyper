@@ -1,9 +1,10 @@
 // lib/screens/checklist_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:greenkeyper/screens/dashboard/submission_screen.dart';
-import 'package:greenkeyper/widgets/common/custom_button.dart';
-import '../../providers/checklist_provider.dart';
+import 'package:greenkeyper/ui/screens/dashboard/submission_screen.dart';
+
+import '../../../providers/checklist_provider.dart';
+import '../../widgets/common/custom_button.dart';
 
 class ChecklistScreen extends ConsumerStatefulWidget {
   const ChecklistScreen({super.key});
@@ -135,7 +136,7 @@ class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
                   height: 35,
                   width: 35,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withAlpha(51),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(
@@ -289,10 +290,10 @@ class _ChecklistScreenState extends ConsumerState<ChecklistScreen> {
                           ),
                           decoration: item.isFlagged
                               ? BoxDecoration(
-                                  color: Colors.orange.withOpacity(0.1),
+                                  color: Colors.orange.withAlpha(25),
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
-                                    color: Colors.orange.withOpacity(0.3),
+                                    color: Colors.orange.withAlpha(77),
                                     width: 1,
                                   ),
                                 )
